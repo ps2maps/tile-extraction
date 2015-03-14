@@ -3,3 +3,6 @@ These Python scripts are used to extract the PlanetSide 2 continent map tiles fr
 
 The .dds tiles are then converted to JPGs and their latitude and longitude tile coordinates are converted to a system that is used by the Leaflet map for ps2maps.com.
 
+ImageMagick is required for file conversion.
+
+The script is for Windows but could easily be converted to run on Linux or OSX.
