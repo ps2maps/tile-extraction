@@ -116,7 +116,7 @@ for continent in continents:
 				dds.close()
 
 				# Convert to PNG
-				cmd = convert + " " + tmp + " -flip -quality " + quality + " " + zoom5 + outputFilename
+				cmd = convert + " " + tmp + " -flip -resize 256x256 -quality " + quality + " " + zoom5 + outputFilename
 				os.system(cmd)
 
 				# Delete the tmp DDS file
