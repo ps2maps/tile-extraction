@@ -62,7 +62,7 @@ for continent in continents:
 		shutil.rmtree(output + continent)
 		time.sleep(1)
 
-	print "Extracting zoom level 5 tiles for " + continent
+	print "\nExtracting zoom level 5 tiles for " + continent
 
 	# Zoom 5 output folder
 	zoom5 = output + continent + "/zoom5/"
@@ -119,14 +119,14 @@ for continent in continents:
 				cmd = convert + " " + tmp + " -flip -resize 256x256 -quality " + quality + " " + zoom5 + outputFilename
 				os.system(cmd)
 
-				# Delete the tmp DDS file
+				# Delete the temporary DDS file
 				os.remove(tmp)
 
 		pack.close()
 		ij+=1
 
 	# Create Zoom Level 4 tiles
-	print "Creating zoom level 4 tiles for " + continent
+	print "\nCreating zoom level 4 tiles for " + continent
 
 	# Zoom 4 output folder
 	zoom4 = output + continent + "/zoom4/"
@@ -146,11 +146,11 @@ for continent in continents:
 
 			cmd = montage + " -geometry +0+0 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + zoom4 + outputFilename
 			os.system(cmd)
-			cmd = convert + " -resize 256x256 -quality " + quality + " " + outputFilename + " " + outputFilename
+			cmd = convert + " -resize 256x256 -quality " + quality + " " + zoom4 + outputFilename + " " + zoom4 + outputFilename
 			os.system(cmd)
 
 	# Create Zoom Level 3 tiles
-	print "Creating zoom level 3 tiles for " + continent
+	print "\nCreating zoom level 3 tiles for " + continent
 
 	# Zoom 3 output folder
 	zoom3 = output + continent + "/zoom3/"
@@ -170,11 +170,11 @@ for continent in continents:
 
 			cmd = montage + " -geometry +0+0 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + zoom3 + outputFilename
 			os.system(cmd)
-			cmd = convert + " -resize 256x256 -quality " + quality + " " + outputFilename + " " + outputFilename
+			cmd = convert + " -resize 256x256 -quality " + quality + " " + zoom3 + outputFilename + " " + zoom3 + outputFilename
 			os.system(cmd)
 
 	# Create Zoom Level 2 tiles
-	print "Creating zoom level 2 tiles for " + continent
+	print "\nCreating zoom level 2 tiles for " + continent
 
 	# Zoom 2 output folder
 	zoom2 = output + continent + "/zoom2/"
@@ -194,11 +194,11 @@ for continent in continents:
 
 			cmd = montage + " -geometry +0+0 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + zoom2 + outputFilename
 			os.system(cmd)
-			cmd = convert + " -resize 256x256 -quality " + quality + " " + outputFilename + " " + outputFilename
+			cmd = convert + " -resize 256x256 -quality " + quality + " " + zoom2 + outputFilename + " " + zoom2 + outputFilename
 			os.system(cmd)
 
 	# Create Zoom Level 1 tiles
-	print "Creating zoom level 1 tiles for " + continent
+	print "\nCreating zoom level 1 tiles for " + continent
 
 	# Zoom 1 output folder
 	zoom1 = output + continent + "/zoom1/"
@@ -218,6 +218,6 @@ for continent in continents:
 
 			cmd = montage + " -geometry +0+0 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + zoom1 + outputFilename
 			os.system(cmd)
-			cmd = convert + " -resize 256x256 -quality " + quality + " " + outputFilename + " " + outputFilename
+			cmd = convert + " -resize 256x256 -quality " + quality + " " + zoom1 + outputFilename + " " + zoom1 + outputFilename
 			os.system(cmd)
 
