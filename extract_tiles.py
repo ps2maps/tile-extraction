@@ -37,13 +37,14 @@ def ps2int(num):
 class entry:
 	pass
 
+# Output folder
 output = sys.path[0] + "/output/"
 
-# PlanetSide 2 installation Assets folder
+# PlanetSide 2 installation assets folder
 inputfolder = "C:/PlanetSide2/Resources/Assets/"
 
-# JPG Quality
-quality = str(85)
+# JPG quality
+quality = str(65)
 
 # ImageMagick exe's
 convert = "C:/ImageMagick/convert.exe"
@@ -55,6 +56,9 @@ continents = ['indar']
 # Loop thru continents
 for continent in continents:
 
+	# Network folder
+	networkPath = "w:/" + continent + "/test/"
+
 	# Delete and recreate output folder
 	if os.path.exists(output + continent):
 		print "Deleting output folder for " + continent
@@ -63,19 +67,10 @@ for continent in continents:
 
 	print "Extracting zoom level 5 tiles for " + continent
 
-	# Create output folders
+	# Zoom 5 output folder
 	zoom5 = output + continent + "/zoom5/"
-	os.makedirs(zoom5)
-	zoom4 = output + continent + "/zoom4/"
-	os.makedirs(zoom4)
-	zoom3 = output + continent + "/zoom3/"
-	os.makedirs(zoom3)
-	zoom2 = output + continent + "/zoom2/"
-	os.makedirs(zoom2)
-	zoom1 = output + continent + "/zoom1/"
-	os.makedirs(zoom1)
-	zoom0 = output + continent + "/zoom0/"
-	os.makedirs(zoom0)
+	if not os.path.exists(zoom5):
+		os.makedirs(zoom5)
 
 	ij=0
 	while 1:
@@ -118,13 +113,13 @@ for continent in continents:
 				outputFilename = continent + "_5_" + longitude + "_" + latitude + ".jpg"
 
 				# Write temp DDS file
-				tmp = zoom5 + ent.name.lower()
+				tmp = zoom[5] + ent.name.lower()
 				dds=open(tmp,"wb")
 				dds.write(pack.read(ent.size))
 				dds.close()
 
 				# Convert to PNG
-				cmd = convert + " " + tmp + " -flip -quality " + quality + " " + zoom5 + outputFilename
+				cmd = convert + " " + tmp + " -flip -quality " + quality + " " + zoom[5] + outputFilename
 				os.system(cmd)
 
 				# Delete the tmp DDS file
@@ -133,22 +128,151 @@ for continent in continents:
 		pack.close()
 		ij+=1
 
+	# Zoom 5
+	if not os.path.exists(networkPath + "zoom5/"):
+		os.makedirs(networkPath + "zoom5/")
+	cmd = "copy /Y " + (zoom5 + " " + networkPath + "zoom5/").replace('/','\\')
+	os.system(cmd)
+
+	print "\n"
+
+
+
+
+
 	# Create Zoom Level 4 tiles
-	# Combines 4 tiles into one in mosaic pattern
-	print "Extracting zoom level 4 tiles for " + continent
+	print "Creating zoom level 4 tiles for " + continent
 
-	for x in range(-16,16):
-		if x%2 == 0:
-			for y in range(-16,16):
-				if y%2 == 0:
+	# Zoom 4 output folder
+	zoom4 = output + continent + "/zoom4/"
+	if not os.path.exists(zoom4):
+		os.makedirs(zoom4)
 
-					tile1 = zoom5 + continent + "_5_" + str(x) + "_" + str(y) + ".jpg"
-					tile2 = zoom5 + continent + "_5_" + str(x+1) + "_" + str(y) + ".jpg"
-					tile3 = zoom5 + continent + "_5_" + str(x) + "_" + str(y+1) + ".jpg"
-					tile4 = zoom5 + continent + "_5_" + str(x+1) + "_" + str(y+1) + ".jpg"
+	for x in range(-16,16, 2):
+		for y in range(-16,16, 2):
 
-					outputFilename = continent + "_4_" + str(x/2) + "_" + str(y/2) + ".jpg"
+			tile1 = zoom5 + continent + "_5_" + str(x) + "_" + str(y) + ".jpg"
+			tile2 = zoom5 + continent + "_5_" + str(x+1) + "_" + str(y) + ".jpg"
+			tile3 = zoom5 + continent + "_5_" + str(x) + "_" + str(y+1) + ".jpg"
+			tile4 = zoom5 + continent + "_5_" + str(x+1) + "_" + str(y+1) + ".jpg"
+			outputFilename = continent + "_4_" + str(x/2) + "_" + str(y/2) + ".jpg"
 
-					cmd = montage + " -geometry +0+0 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + zoom4 + outputFilename
-					os.system(cmd)
+			print ".",
+
+			cmd = montage + " -geometry +0+0 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + zoom4 + outputFilename
+			os.system(cmd)
+
+	# Copy Zoom 4 tiles to network
+	if not os.path.exists(networkPath + "zoom4/"):
+		os.makedirs(networkPath + "zoom4/")
+	cmd = "copy /Y " + (zoom4 + " " + networkPath + "zoom4/").replace('/','\\')
+	os.system(cmd)
+
+	print "\n"
+
+
+
+
+
+	# Create Zoom Level 3 tiles
+	print "Creating zoom level 3 tiles for " + continent
+
+	# Zoom 3 output folder
+	zoom3 = output + continent + "/zoom3/"
+	if not os.path.exists(zoom3):
+		os.makedirs(zoom3)
+
+	for x in range(-8,8, 2):
+		for y in range(-8,8, 2):
+
+			tile1 = zoom4 + continent + "_4_" + str(x) + "_" + str(y) + ".jpg"
+			tile2 = zoom4 + continent + "_4_" + str(x+1) + "_" + str(y) + ".jpg"
+			tile3 = zoom4 + continent + "_4_" + str(x) + "_" + str(y+1) + ".jpg"
+			tile4 = zoom4 + continent + "_4_" + str(x+1) + "_" + str(y+1) + ".jpg"
+			outputFilename = continent + "_3_" + str(x/2) + "_" + str(y/2) + ".jpg"
+
+			print ".",
+
+			cmd = montage + " -geometry +0+0 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + zoom3 + outputFilename
+			os.system(cmd)
+
+	# Copy Zoom 3 tiles to network
+	if not os.path.exists(networkPath + "zoom3/"):
+		os.makedirs(networkPath + "zoom3/")
+	cmd = "copy /Y " + (zoom3 + " " + networkPath + "zoom3/").replace('/','\\')
+	os.system(cmd)
+
+	print "\n"
+
+
+
+
+
+
+	# Create Zoom Level 2 tiles
+	print "Creating zoom level 2 tiles for " + continent
+
+	# Zoom 2 output folder
+	zoom2 = output + continent + "/zoom2/"
+	if not os.path.exists(zoom2):
+		os.makedirs(zoom2)
+
+	for x in range(-4,4, 2):
+		for y in range(-4,4, 2):
+
+			tile1 = zoom3 + continent + "_3_" + str(x) + "_" + str(y) + ".jpg"
+			tile2 = zoom3 + continent + "_3_" + str(x+1) + "_" + str(y) + ".jpg"
+			tile3 = zoom3 + continent + "_3_" + str(x) + "_" + str(y+1) + ".jpg"
+			tile4 = zoom3 + continent + "_3_" + str(x+1) + "_" + str(y+1) + ".jpg"
+			outputFilename = continent + "_2_" + str(x/2) + "_" + str(y/2) + ".jpg"
+
+			print ".",
+
+			cmd = montage + " -geometry +0+0 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + zoom2 + outputFilename
+			os.system(cmd)
+
+	# Copy Zoom 2 tiles to network
+	if not os.path.exists(networkPath + "zoom2/"):
+		os.makedirs(networkPath + "zoom2/")
+	cmd = "copy /Y " + (zoom2 + " " + networkPath + "zoom2/").replace('/','\\')
+	os.system(cmd)
+
+	print "\n"
+
+
+
+
+
+
+	# Create Zoom Level 1 tiles
+	print "Creating zoom level 1 tiles for " + continent
+
+	# Zoom 1 output folder
+	zoom1 = output + continent + "/zoom1/"
+	if not os.path.exists(zoom1):
+		os.makedirs(zoom1)
+
+	for x in range(-2,2, 2):
+		for y in range(-2,2, 2):
+
+			tile1 = zoom2 + continent + "_2_" + str(x) + "_" + str(y) + ".jpg"
+			tile2 = zoom2 + continent + "_2_" + str(x+1) + "_" + str(y) + ".jpg"
+			tile3 = zoom2 + continent + "_2_" + str(x) + "_" + str(y+1) + ".jpg"
+			tile4 = zoom2 + continent + "_2_" + str(x+1) + "_" + str(y+1) + ".jpg"
+			outputFilename = continent + "_1_" + str(x/2) + "_" + str(y/2) + ".jpg"
+
+			print ".",
+
+			cmd = montage + " -geometry +0+0 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + zoom1 + outputFilename
+			os.system(cmd)
+
+	# Copy Zoom 2 tiles to network
+	if not os.path.exists(networkPath + "zoom1/"):
+		os.makedirs(networkPath + "zoom1/")
+	cmd = "copy /Y " + (zoom1 + " " + networkPath + "zoom1/").replace('/','\\')
+	os.system(cmd)
+
+	print "\n"
+
+
 
