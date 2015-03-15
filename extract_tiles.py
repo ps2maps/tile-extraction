@@ -41,14 +41,25 @@ class entry:
 output = sys.path[0] + "/output/"
 
 # PlanetSide 2 installation assets folder
-inputfolder = "C:/PlanetSide2/Resources/Assets/"
-
-# JPG quality
-quality = str(65)
+inputFolder = "C:/PlanetSide2/Resources/Assets/"
 
 # ImageMagick exe's
 convert = "C:/ImageMagick/convert.exe"
 montage = "C:/ImageMagick/montage.exe"
+
+# Path checking
+if not os.path.exists(inputFolder):
+	print "PlanetSide 2 Assets folder does not exist: " + inputFolder
+	sys.exit()
+if not os.path.exists(convert):
+	print "ImageMagick convert.exe does not exist: " + convert
+	sys.exit()
+if not os.path.exists(montage):
+	print "ImageMagick montage.exe does not exist: " + montage
+	sys.exit()
+
+# JPG quality
+quality = str(65)
 
 # List of continents to extract tiles for
 continents = ['indar']
@@ -73,7 +84,7 @@ for continent in continents:
 	while 1:
 		partSize=1 #anything non-zero to make a do-while
 		entrylist=[]
-		fname=inputfolder+"Assets_"+ps2int(ij)+".pack"
+		fname=inputFolder+"Assets_"+ps2int(ij)+".pack"
 		if not os.path.exists(fname):
 			break
 		pack = open(fname,"rb")
