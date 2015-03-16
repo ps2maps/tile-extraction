@@ -151,13 +151,11 @@ for continent in continents:
 			tile2 = zoom5 + continent + "_5_" + str(x+1) + "_" + str(y) + ".jpg"
 			tile3 = zoom5 + continent + "_5_" + str(x) + "_" + str(y+1) + ".jpg"
 			tile4 = zoom5 + continent + "_5_" + str(x+1) + "_" + str(y+1) + ".jpg"
-			outputFilename = continent + "_4_" + str(x/2) + "_" + str(y/2) + ".jpg"
+			outputFilename = zoom4 + continent + "_4_" + str(x/2) + "_" + str(y/2) + ".jpg"
 
 			print ".",
 
-			cmd = montage + " -geometry +0+0 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + zoom4 + outputFilename
-			os.system(cmd)
-			cmd = convert + " -resize 256x256 -quality " + quality + " " + zoom4 + outputFilename + " " + zoom4 + outputFilename
+			cmd = montage + " -geometry +0+0 -resize 256x256 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + outputFilename
 			os.system(cmd)
 
 	# Create Zoom Level 3 tiles
@@ -175,13 +173,11 @@ for continent in continents:
 			tile2 = zoom4 + continent + "_4_" + str(x+1) + "_" + str(y) + ".jpg"
 			tile3 = zoom4 + continent + "_4_" + str(x) + "_" + str(y+1) + ".jpg"
 			tile4 = zoom4 + continent + "_4_" + str(x+1) + "_" + str(y+1) + ".jpg"
-			outputFilename = continent + "_3_" + str(x/2) + "_" + str(y/2) + ".jpg"
+			outputFilename = zoom3 + continent + "_3_" + str(x/2) + "_" + str(y/2) + ".jpg"
 
 			print ".",
 
-			cmd = montage + " -geometry +0+0 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + zoom3 + outputFilename
-			os.system(cmd)
-			cmd = convert + " -resize 256x256 -quality " + quality + " " + zoom3 + outputFilename + " " + zoom3 + outputFilename
+			cmd = montage + " -geometry +0+0 -resize 256x256 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + outputFilename
 			os.system(cmd)
 
 	# Create Zoom Level 2 tiles
@@ -199,13 +195,11 @@ for continent in continents:
 			tile2 = zoom3 + continent + "_3_" + str(x+1) + "_" + str(y) + ".jpg"
 			tile3 = zoom3 + continent + "_3_" + str(x) + "_" + str(y+1) + ".jpg"
 			tile4 = zoom3 + continent + "_3_" + str(x+1) + "_" + str(y+1) + ".jpg"
-			outputFilename = continent + "_2_" + str(x/2) + "_" + str(y/2) + ".jpg"
+			outputFilename = zoom2 + continent + "_2_" + str(x/2) + "_" + str(y/2) + ".jpg"
 
 			print ".",
 
-			cmd = montage + " -geometry +0+0 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + zoom2 + outputFilename
-			os.system(cmd)
-			cmd = convert + " -resize 256x256 -quality " + quality + " " + zoom2 + outputFilename + " " + zoom2 + outputFilename
+			cmd = montage + " -geometry +0+0 -resize 256x256 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + outputFilename
 			os.system(cmd)
 
 	# Create Zoom Level 1 tiles
@@ -223,12 +217,45 @@ for continent in continents:
 			tile2 = zoom2 + continent + "_2_" + str(x+1) + "_" + str(y) + ".jpg"
 			tile3 = zoom2 + continent + "_2_" + str(x) + "_" + str(y+1) + ".jpg"
 			tile4 = zoom2 + continent + "_2_" + str(x+1) + "_" + str(y+1) + ".jpg"
-			outputFilename = continent + "_1_" + str(x/2) + "_" + str(y/2) + ".jpg"
+			outputFilename = zoom1 + continent + "_1_" + str(x/2) + "_" + str(y/2) + ".jpg"
 
 			print ".",
 
-			cmd = montage + " -geometry +0+0 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + zoom1 + outputFilename
+			cmd = montage + " -geometry +0+0 -resize 256x256 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + outputFilename
 			os.system(cmd)
-			cmd = convert + " -resize 256x256 -quality " + quality + " " + zoom1 + outputFilename + " " + zoom1 + outputFilename
-			os.system(cmd)
+
+	# Create zoom level 0 tiles
+	print "\nCreating zoom level 0 tiles for " + continent
+
+	# Zoom 0 output folder
+	zoom0 = output + continent + "/zoom0/"
+	if not os.path.exists(zoom0):
+		os.makedirs(zoom0)
+
+	# Create empty image that uses background color #051111
+	empty = zoom0 + "empty.jpg"
+	cmd = convert + " -resize 256x256 xc:#051111 -quality " + quality + " " + empty
+	os.system(cmd)
+
+	tile = zoom1 + continent + "_1_0_0.jpg"
+	outputFilename = zoom0 + continent + "_0_0_0.jpg"
+	cmd = montage + " -geometry +0+0 -background none -quality " + quality + " " + tile + " " + empty + " " + empty + " " + empty + " " + outputFilename
+	os.system(cmd)
+
+	tile = zoom1 + continent + "_1_0_-1.jpg"
+	outputFilename = zoom0 + continent + "_0_0_-1.jpg"
+	cmd = montage + " -geometry +0+0 -background none -quality " + quality + " " + empty + " " + empty + " " + tile + " " + empty + " " + outputFilename
+	os.system(cmd)
+
+	tile = zoom1 + continent + "_1_-1_0.jpg"
+	outputFilename = zoom0 + continent + "_0_-1_0.jpg"
+	cmd = montage + " -geometry +0+0 -background none -quality " + quality + " " + empty + " " + tile + " " + empty + " " + empty + " " + outputFilename
+	os.system(cmd)
+
+	tile = zoom1 + continent + "_1_-1_-1.jpg"
+	outputFilename = zoom0 + continent + "_0_-1_-1.jpg"
+	cmd = montage + " -geometry +0+0 -background none -quality " + quality + " " + empty + " " + empty + " " + empty + " " + tile + " " + outputFilename
+	os.system(cmd)
+
+	os.remove(empty)
 
