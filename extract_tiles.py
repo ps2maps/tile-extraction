@@ -62,7 +62,7 @@ if not os.path.exists(montage):
 quality = str(65)
 
 # List of continents to extract tiles for
-continents = ['indar']
+continents = ['amerish','esamir','hossin','indar']
 
 # Loop thru continents
 for continent in continents:
